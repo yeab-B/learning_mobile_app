@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_moon/widgets/custom_dropdown_button.dart';
 
 class HomePage extends StatelessWidget {
   late double _deviceHeight, _deviceWidth;
@@ -13,11 +14,19 @@ class HomePage extends StatelessWidget {
           height: _deviceHeight,
           width: _deviceWidth,
           padding: EdgeInsets.symmetric(horizontal: _deviceWidth * 0.05),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [_pageTitle(), _destinationDropDownWidget()],
+          child: Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [_pageTitle(), _bookRideWWidget()],
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: _astroImageWidget(),
+              ),
+            ],
           ),
         ),
       ),
@@ -42,6 +51,8 @@ class HomePage extends StatelessWidget {
 
   Widget _astroImageWidget() {
     return Container(
+      height: _deviceHeight * 0.5,
+      width: _deviceWidth * 0.65,
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/astro_moon.png'),
@@ -51,25 +62,58 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _destinationDropDownWidget() {
-    List<String> _items = ['Moon', 'Mars'];
+  Widget _bookRideWWidget() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: _deviceWidth * 0.05),
-      width: _deviceWidth,
+      height: _deviceHeight * 0.25,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _destinationDropDownWidget(),
+          _travellersInformationWidget(),
+          _rideButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _destinationDropDownWidget() {
+    return CustomDropdownButtonClass(
+      values: const ['Moon', 'Mars', 'Europa', 'Titan'],
+      width: _deviceWidth * 0.9,
+    );
+  }
+
+  Widget _travellersInformationWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        CustomDropdownButtonClass(
+          values: const ['1', '2', '3', '4'],
+          width: _deviceWidth * 0.45,
+        ),
+        CustomDropdownButtonClass(
+          values: const ['Economy', 'Business', 'First Class,private'],
+          width: _deviceWidth * 0.40,
+        ),
+      ],
+    );
+  }
+
+  Widget _rideButton() {
+    return Container(
+      margin: EdgeInsets.only(bottom: _deviceHeight * 0.02),
+      width: _deviceHeight,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(53, 53, 53, 1.0),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
-
-      child: DropdownButton(
-        value: _items.first,
-        onChanged: (_) {},
-        items: _items
-            .map((e) => DropdownMenuItem(child: Text(e), value: e))
-            .toList(),
-        underline: Container(),
-        dropdownColor: const Color.fromRGBO(53, 53, 53, 1.0),
-        style: const TextStyle(color: Colors.white, fontSize: 20),
+      child: MaterialButton(
+        onPressed: () {},
+        child: const Text("Book Ride", style: TextStyle(color: Colors.black)),
       ),
     );
   }
